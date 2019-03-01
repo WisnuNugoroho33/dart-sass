@@ -1440,6 +1440,7 @@ relase. For details, see http://bit.ly/moz-document.
 
     resolveOperations() {
       if (operators == null) return;
+      allowSlash = allowSlash && operators.length < 1;
       while (!operators.isEmpty) {
         resolveOneOperation();
       }
@@ -1479,6 +1480,7 @@ relase. For details, see http://bit.ly/moz-document.
 
       operators ??= [];
       operands ??= [];
+      allowSlash = allowSlash && operators.isEmpty;
       while (operators.isNotEmpty &&
           operators.last.precedence >= operator.precedence) {
         resolveOneOperation();
@@ -1489,6 +1491,7 @@ relase. For details, see http://bit.ly/moz-document.
       operands.add(singleExpression);
       whitespace();
       allowSlash = allowSlash && lookingAtNumber();
+      allowSlash = allowSlash && (operands.isEmpty || operands.last is! NumberExpression);
       singleExpression = _singleExpression();
       allowSlash = allowSlash && singleExpression is NumberExpression;
     }
